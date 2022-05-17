@@ -20,7 +20,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'AlphaAzureCRSvcConn'
-    repository: ''
+    repository: 'AlphaAzureCRSvcConnRepos'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     buildContext: $(Build.Repository.LocalPath)
