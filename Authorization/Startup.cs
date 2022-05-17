@@ -94,6 +94,7 @@ namespace Authorization
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication1 v1");
+                    c.RoutePrefix = string.Empty;
                     
                 });
 
