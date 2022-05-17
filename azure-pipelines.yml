@@ -1,4 +1,10 @@
 # ASP.NET Core
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Authorizationv1CRSvcConn'
+    repository: 'Authorizationv1CRSvcConn1'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
