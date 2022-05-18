@@ -1,19 +1,24 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-COPY *.csproj ./
-RUN dotnet restore 
+USER Administrator 
 
-COPY . ./
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Authorization/Authorization.csproj", "Authorization/"]
+RUN dotnet restore "Authorization/Authorization.csproj"
+COPY . .
+WORKDIR "/src/Authorization"
+RUN dotnet build "Authorization.csproj" -c Release -o /app/build
 
+FROM build AS publish
+RUN dotnet publish "Authorization.csproj" -c Release -o /app/publish
 
-RUN dotnet publish -c Release -o out
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Authorization.dll"]
